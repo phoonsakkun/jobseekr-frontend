@@ -20,7 +20,7 @@ export default function JobContainer() {
   }, []);
 
   return (
-    <div className="carousel carousel-center p-4 space-x-4 bg-neutral max-w-[100vw] ">
+    <div className="carousel carousel-center p-4 space-x-4 bg-neutral max-w-[100vw]">
       <JobList Jobs={jobs} />
     </div>
   );

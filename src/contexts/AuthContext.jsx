@@ -5,6 +5,9 @@ const AuthContext = createContext();
 
 export default function AuthContextProvider(props) {
   const [user, setUser] = useState(null);
+  // const [admin , setAdmin] =
+  //  state loading = true
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -12,6 +15,7 @@ export default function AuthContextProvider(props) {
     getMe(token)
       .then((rs) => {
         setUser(rs.data.user);
+        // set state loading
       })
       .catch((err) => console.log(err));
   }, []);

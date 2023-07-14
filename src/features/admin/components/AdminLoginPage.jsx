@@ -1,35 +1,48 @@
-import InputForm from "./InputForm";
+import React from "react";
+import InputForm from "../../auth/components/InputForm";
+import { Link } from "react-router-dom";
+import InputErrorMessage from "../../auth/components/InputErrorMesssage";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getAdmin, loginAdmin } from "../../../api/auth-api";
+import validateLogin from "../../auth/validate/validateLogin";
 import { useAuth } from "../../../contexts/Authcontext";
-import { getMe, login } from "../../../api/auth-api";
-import { Link, useNavigate } from "react-router-dom";
-import InputErrorMessage from "./InputErrorMesssage";
+import { useAdmin } from "../../../contexts/AdminContext";
 
-export default function LoginForm() {
-  const { user, setUser } = useAuth();
+function AdminLoginPage() {
+  const { admin, setAdmin } = useAdmin();
+  // const { user, setUser } = useAuth();
+
   const [input, setInput] = useState({ email: "", password: "" });
-
-  const Navigate = useNavigate();
+  const [error, setError] = useState({});
 
   const handleChangeInput = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
-    console.log(input);
+    // console.log(input);
   };
+
+  const Navigate = useNavigate();
 
   const hdlSubmit = (e) => {
     e.preventDefault();
-    login(input)
+    loginAdmin(input)
       .then((rs) => {
-        console.log("fg", rs);
+        // console.log("fg", rs);
         localStorage.setItem("token", rs.data.accessToken);
         let token = localStorage.getItem("token");
-        console.log("edok", token);
-        return getMe(token);
+        // console.log("edok", token);
+        // const result = validateLogin(input);
+        // if (result) {
+        //   return setError(result);
+        // }
+        // setError({});
+        return getAdmin(token);
       })
       .then((rs) => {
         console.log(rs.data);
-        setUser(rs.data);
-        Navigate("/");
+        setAdmin(rs.data);
+        // console.log(admin);
+        Navigate("/admin");
       })
       .catch((err) => alert(err.response.data.message));
     // .catch((err) => alert(err.response.data.error || err.message));
@@ -37,15 +50,21 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="h-screen w-screen flex justify-center items-center ">
-        <div className="p-10 w-[55%] flex flex-col bg-white rounded-md">
+      <div className="h-screen w-screen flex items-center relative">
+        <img
+          src="https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=928&q=80"
+          alt="background"
+          className="max-h-full"
+        />
+
+        <div className="p-10 w-[55%] flex flex-col bg-white rounded-md ml-8 ">
           <div className="flex flex-between ">
             <div className="flex-1 font-bold text-2xl">
               เข้าสู่ระบบ JOBSEEKR
             </div>
-            <Link to="/adminlogin">
-              <button className="flex-1 border border-[#004680] rounded-md text-[#004680] p-2 ">
-                เข้าสู่ระบบ สำหรับผู้ประกอบการ
+            <Link to="/login">
+              <button className="flex-1 border border-[#004680] rounded-md text-[#004680] p-2">
+                เข้าสู่ระบบ สำหรับผู้สมัครงาน
               </button>
             </Link>
           </div>
@@ -75,8 +94,8 @@ export default function LoginForm() {
           </form>
           <div className="mt-8">
             หรือ
-            <Link to="/register">
-              <span className="text-[#6fbfea]"> ลงทะเบียน </span>
+            <Link to="/adminregister">
+              <span className="text-[#6fbfea]">ลงทะเบียน</span>
             </Link>
             ด้วยอีเมลอื่น?
           </div>
@@ -85,3 +104,5 @@ export default function LoginForm() {
     </>
   );
 }
+
+export default AdminLoginPage;

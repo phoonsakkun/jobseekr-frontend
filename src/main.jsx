@@ -4,14 +4,17 @@ import App from "./App.jsx";
 import "./index.css";
 
 import AuthContextProvider from "./contexts/Authcontext.jsx";
-import LoadingContextProvider from "./contexts/LoadingContext.jsx";
+import AdminContextProvider from "./contexts/AdminContext.jsx";
+// import LoadingContextProvider from "./contexts/LoadingContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-  <LoadingContextProvider>
-    <AuthContextProvider>
+  <AuthContextProvider>
+    <AdminContextProvider>
+      {/* <LoadingContextProvider> */}
       <App />
-    </AuthContextProvider>
-  </LoadingContextProvider>
+      {/* </LoadingContextProvider> */}
+    </AdminContextProvider>
+  </AuthContextProvider>
   // </React.StrictMode>,
 );

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const { loading } = useLoading();
+  // const { loading } = useLoading();
 
   return (
     <div>

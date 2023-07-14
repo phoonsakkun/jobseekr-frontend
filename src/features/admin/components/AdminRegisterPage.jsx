@@ -1,62 +1,52 @@
+import React from "react";
+import InputErrorMessage from "../../auth/components/InputErrorMesssage";
+import InputForm from "../../auth/components/InputForm";
 import { useState } from "react";
-import { register } from "../../../api/auth-api";
 import { Link } from "react-router-dom";
-import InputForm from "./InputForm";
-import validateRegister from "../validate/validateRegister";
 import { toast } from "react-toastify";
-import InputErrorMessage from "./InputErrorMesssage";
+import validateAdminRegister from "../validate/validateAdminRegister";
+import { registerAdmin } from "../../../api/auth-api";
 import { useNavigate } from "react-router-dom";
 
-export default function RegisterForm() {
+function AdminRegisterPage() {
+  const handleChangeInput = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
   const [input, setInput] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    companyName: "",
     password: "",
     confirmPassword: "",
   });
   const [error, setError] = useState({});
 
   const Navigate = useNavigate();
-
-  const handleChangeInput = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-
   const hdlSubmit = async (e) => {
     try {
       e.preventDefault();
-      const result = validateRegister(input);
+      const result = validateAdminRegister(input);
       console.log("-------input", input);
       console.log("-----result", result);
       if (result) {
         return setError(result);
       }
       setError({});
-      await register(input);
+      await registerAdmin(input);
       toast.success("register successfully");
-      Navigate("/login");
+      Navigate("/adminlogin");
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err);
     }
-    // const { firstName, lastName, email, password, confirmPassword } = input;
-
-    //   if (password !== confirmPassword)
-    //     return alert("Password not match , recheck");
-    //   register({ firstName, lastName, email, password, confirmPassword })
-    //     .then((rs) => {
-    //       console.log(rs);
-    //     })
-    //     .catch((err) => console.log(err));
   };
-
   return (
     <>
-      <div className="h-screen w-screen flex justify-center items-center">
+      <div className="h-full w-screen flex justify-center items-center">
         <img
-          src="https://images.unsplash.com/photo-1685745585332-34133f5daa21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-          alt="wave"
+          src="https://images.unsplash.com/photo-1688538452975-e0b8b3c5daa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2062&q=80"
+          alt="bg"
         />
         <div className="p-10 w-[55%] flex flex-col bg-white rounded-md absolute">
           <div className="flex-1 font-bold text-2xl">สมัครสมาชิก JOBSEEKR</div>
@@ -89,6 +79,16 @@ export default function RegisterForm() {
               />
               {error.email && <InputErrorMessage message={error.email} />}
               <InputForm
+                label="บริษัท"
+                name="companyName"
+                value={input.companyName}
+                onChange={handleChangeInput}
+                type={"text"}
+              />
+              {error.companyName && (
+                <InputErrorMessage message={error.companyName} />
+              )}
+              <InputForm
                 label="รหัสผ่าน"
                 name="password"
                 value={input.password}
@@ -113,8 +113,8 @@ export default function RegisterForm() {
           </form>
           <div className="mt-8">
             หรือ
-            <Link to="/login">
-              <span className="text-[#6fbfea]"> เข้าสู่ระบบ </span>
+            <Link to="/adminlogin">
+              <span className="text-[#6fbfea]">เข้าสู่ระบบ</span>
             </Link>
             ด้วยอีเมลอื่น?
           </div>
@@ -123,3 +123,5 @@ export default function RegisterForm() {
     </>
   );
 }
+
+export default AdminRegisterPage;

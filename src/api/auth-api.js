@@ -14,21 +14,46 @@ export const login = async (input) => {
   return await appApi.post("/auth/login", input);
 };
 
+export const loginAdmin = async (input) => {
+  return await appApi.post("/admin/login", input);
+};
+
 export const register = (input) => {
   return appApi.post("/auth/register", input);
+};
+export const registerAdmin = (input) => {
+  return appApi.post("/admin/register", input);
 };
 
 export const getMe = (token) => {
   return appApi.get("/auth/getme", addToken(token));
+};
+export const getAdmin = (token) => {
+  return appApi.get("/admin/getadmin", addToken(token));
 };
 
 // export const createJob = (input) => {
 
 // }
 
-export const getJob = () => {
-  return appApi.get("/jobs");
+export const getSearchJob = (query) => {
+  const url = `/jobs${query ? "?" + query : ""}`;
+  console.log(url);
+  // return appApi.get("/jobs" + query ? `?${query}` : "");
+  return appApi.get(url);
 };
+export const getJob = () => {
+  return appApi.get("/jobs/all");
+};
+// export const getJobByLocation = (locationId) => {
+//   return appApi.get(`/jobs?location=${locationId}`);
+// };
+// export const getJobByJobType = (jobTypeId) => {
+//   return appApi.get(`/jobs?jobtype=${jobTypeId}`);
+// };
+// export const getJobByLocationAndJobType = (locationId, jobTypeId) => {
+//   return appApi.get(`/jobs?location=${locationId}&jopType=${jobTypeId}`);
+// };
 
 export const getCompany = () => {
   return appApi.get("/jobs/company");
