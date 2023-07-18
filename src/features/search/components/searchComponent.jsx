@@ -4,10 +4,13 @@ import Jobcard from "../../jobelement/Jobcard";
 import { getSearchJob, searchJob } from "../../../api/auth-api";
 import { getJob } from "../../../api/auth-api";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchComponent() {
   const [jobs, setJobs] = useState([]);
   const [jobPost, SetJobPost] = useState({});
+
+  const Navigate = useNavigate();
 
   const location = useLocation();
   // console.log(location);
@@ -15,6 +18,10 @@ export default function SearchComponent() {
   const hdlClick = (el) => {
     SetJobPost(el);
     console.log("el", el);
+  };
+
+  const hdlClickJob = () => {
+    Navigate("/applyjob");
   };
 
   const clickPageBack = () => {
@@ -159,7 +166,10 @@ export default function SearchComponent() {
         <div className="bg-slate-500 h-[100vh] basis-3/5 overflow-auto">
           {jobPost?.Employer ? (
             <div className="flex flex-col">
-              <button className="btn btn-accent w-[8rem] font-bold text-white m-2">
+              <button
+                className="btn btn-accent w-[8rem] font-bold text-white m-2"
+                onClick={hdlClickJob}
+              >
                 สมัครงาน
               </button>
               <div className="max-h-64 overflow-auto">

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAdmin, loginAdmin } from "../../../api/auth-api";
 import validateLogin from "../../auth/validate/validateLogin";
-import { useAuth } from "../../../contexts/Authcontext";
+import { useAuth } from "../../../contexts/AuthContext";
 import { useAdmin } from "../../../contexts/AdminContext";
 
 function AdminLoginPage() {
@@ -29,6 +29,7 @@ function AdminLoginPage() {
       .then((rs) => {
         // console.log("fg", rs);
         localStorage.setItem("token", rs.data.accessToken);
+        localStorage.setItem("isAdmin", rs.data.isAdmin);
         let token = localStorage.getItem("token");
         // console.log("edok", token);
         // const result = validateLogin(input);

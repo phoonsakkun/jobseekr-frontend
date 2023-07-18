@@ -1,6 +1,6 @@
 import InputForm from "./InputForm";
 import { useState } from "react";
-import { useAuth } from "../../../contexts/Authcontext";
+import { useAuth } from "../../../contexts/AuthContext";
 import { getMe, login } from "../../../api/auth-api";
 import { Link, useNavigate } from "react-router-dom";
 import InputErrorMessage from "./InputErrorMesssage";
@@ -22,6 +22,7 @@ export default function LoginForm() {
       .then((rs) => {
         console.log("fg", rs);
         localStorage.setItem("token", rs.data.accessToken);
+        localStorage.setItem("isAdmin", rs.data.isAdmin);
         let token = localStorage.getItem("token");
         console.log("edok", token);
         return getMe(token);

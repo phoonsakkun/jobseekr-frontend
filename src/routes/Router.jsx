@@ -10,7 +10,7 @@ import RegisterPage from "../pages/RegisterPage";
 import SearchJobPage from "../pages/SearchJobsPage";
 import Header from "../layouts/Header";
 import Applyjob from "../features/profile/components/Applyjob";
-import EditProfileForm from "../features/profile/components/EditProfileForm";
+import EditProfileInfo from "../features/profile/components/EditProfileInfo";
 import ProfileForm from "../features/profile/components/Profileform";
 import NotFound from "../pages/NotFound";
 import { useAuth } from "../contexts/AuthContext";
@@ -20,16 +20,25 @@ import AdminPage from "../pages/AdminPage";
 import NavbarAdmin from "../layouts/NavbarAdmin";
 import JobPostPage from "../pages/JobPostPage";
 import AdminSetting from "../pages/AdminSetting";
-import ProtectedRoute from "../features/auth/components/ProtectedRoute";
 import RedirectIfAuthenticated from "../features/auth/components/RedirectIfAuthenticated";
-import { useAdmin } from "../contexts/AdminContext";
-import ProtectedRouteAdmin from "../features/admin/components/ProtectedRouteAdmin";
-
+import RediretedIfAdmin from "../features/admin/components/RediretedIfAdmin";
+import PostInputForm from "../pages/PostInputForm";
 export default function Router() {
   const { user } = useAuth();
-  // const user = true;
 
   const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: (
+        <RedirectIfAuthenticated>
+          <LoginPage />
+        </RedirectIfAuthenticated>
+      ),
+    },
+    {
+      path: "/register",
+      element: <RegisterPage />,
+    },
     {
       path: "/",
       element: (
@@ -44,25 +53,18 @@ export default function Router() {
           path: "/",
           element: <HomePage />,
         },
-        {
-          path: "/login",
-          element: user ? <Navigate to="/" /> : <LoginPage />,
-        },
-        {
-          path: "/register",
-          element: user ? <Navigate to="/" /> : <RegisterPage />,
-        },
+
         {
           path: "/searchjob",
           element: <SearchJobPage />,
         },
         {
           path: "/applyjob",
-          element: user ? <Navigate to="/" /> : <Applyjob />,
+          element: user ? <Applyjob /> : <Navigate to="/" />,
         },
         {
           path: "/profileinfo",
-          element: user ? <EditProfileForm /> : <Navigate to="/" />,
+          element: user ? <EditProfileInfo /> : <Navigate to="/" />,
         },
         {
           path: "/profile",
@@ -72,7 +74,11 @@ export default function Router() {
     },
     {
       path: "/adminlogin",
-      element: <AdminLoginPage />,
+      element: (
+        <RediretedIfAdmin>
+          <AdminLoginPage />
+        </RediretedIfAdmin>
+      ),
     },
     {
       path: "/adminregister",
@@ -83,12 +89,8 @@ export default function Router() {
       element: (
         <>
           <div className="flex">
-            {/* <ProtectedRouteAdmin> */}
-            <>
-              <NavbarAdmin />
-              <Outlet />
-            </>
-            {/* </ProtectedRouteAdmin> */}
+            <NavbarAdmin />
+            <Outlet />
           </div>
         </>
       ),
@@ -97,6 +99,10 @@ export default function Router() {
         { path: "/admin/post", element: <JobPostPage /> },
         { path: "/admin/setting", element: <AdminSetting /> },
       ],
+    },
+    {
+      path: "/postjob",
+      element: <PostInputForm />,
     },
   ]);
 

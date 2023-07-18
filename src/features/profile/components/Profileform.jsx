@@ -7,6 +7,9 @@ import validateWorkExp from "../validators/WorkExpValidate";
 import { getMe } from "../../../api/auth-api";
 import useForm from "../../../hook/useForm";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Modal from "../../../component/Modal";
+import EditProfileForm from "./EditProfileForm";
 
 export default function ProfileForm() {
   const { user, setUser } = useAuth();
@@ -21,6 +24,7 @@ export default function ProfileForm() {
   });
   console.log(input);
   const [workExps, setWorkExps] = useState([]);
+  const [open, setOpen] = useState(false);
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   getMe(token)
@@ -55,9 +59,11 @@ export default function ProfileForm() {
               {user?.firstName} {user?.lastName}
             </h1>
             <h5 className="m-2 text-white">{user?.email}</h5>
-            <button className="btn btn-outline btn-primary  m-2">
-              แก้ไขข้อมูลโปรไฟล์
-            </button>
+            <Link to="/profileinfo">
+              <button className="btn btn-outline btn-primary  m-2">
+                แก้ไขข้อมูลโปรไฟล์
+              </button>
+            </Link>
           </div>
         </div>
         <div className="flex-none gap-2">
@@ -72,7 +78,7 @@ export default function ProfileForm() {
               className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-fit"
             >
               <li>
-                <a>เปลี่ยนรูปภาพโปรไฟล์</a>
+                <a onClick={() => setOpen(true)}>เปลี่ยนรูปภาพโปรไฟล์</a>
               </li>
             </ul>
           </div>
@@ -93,7 +99,14 @@ export default function ProfileForm() {
           />
           {/* <EducationForm /> */}
         </div>
-
+        <Modal
+          title="Edit profile"
+          open={open}
+          onClose={() => setOpen(false)}
+          width={44}
+        >
+          <EditProfileForm />
+        </Modal>
         <div className="bg-blue-600 h-[100vh] basis-2/5 overflow-auto"></div>
       </div>
     </>

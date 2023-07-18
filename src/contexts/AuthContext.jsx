@@ -11,6 +11,9 @@ export default function AuthContextProvider(props) {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
+    let isAdmin = localStorage.getItem("isAdmin");
+    console.log(isAdmin);
+    if (isAdmin === "true") return;
     if (!token) return;
     getMe(token)
       .then((rs) => {
